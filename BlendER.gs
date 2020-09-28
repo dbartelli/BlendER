@@ -96,7 +96,7 @@ function getCourseAssignments(mode) {
   // Get courses
   var response = UrlFetchApp.fetch(domain + '/api/v1/courses?enrollment_state=active&state[]=available&per_page=200',params);
   var data = JSON.parse(response.getContentText());
-  var sheetHeader = ['Course','Assignment','Due Date','Submitted Date','Locked?','Late?','Missing?','Grade','Pts Possible','Type','Allowed Attempts','Assignment URL','SubmissionJSON'];
+  var sheetHeader = ['Course','Assignment','Due Date','Submitted Date','Locked?','Late?','Missing?','Grade','Pts Possible','Type','Allowed Attempts','Assignment URL','Submission URL','SubmissionJSON'];
   var assignments = [sheetHeader]; // Starts it off with just the header for the sheet/table and later adds rows
   data.forEach(function (result) {
     // Loop through each course and pull assignments
@@ -124,7 +124,7 @@ function getCourseAssignments(mode) {
           // Ignore/skip this assignment because part of bad chinese class assignment group
         }
         else {
-          assignments.push([result.name,resultAssignment.name,dueDateConverted,submissionDateConverted,resultAssignment.locked_for_user,resultAssignment.submission.late,resultAssignment.submission.missing,resultAssignment.submission.entered_grade,resultAssignment.points_possible,resultAssignment.submission.submission_type,resultAssignment.allowed_attempts,resultAssignment.html_url,resultAssignment.submission]); 
+          assignments.push([result.name,resultAssignment.name,dueDateConverted,submissionDateConverted,resultAssignment.locked_for_user,resultAssignment.submission.late,resultAssignment.submission.missing,resultAssignment.submission.entered_grade,resultAssignment.points_possible,resultAssignment.submission.submission_type,resultAssignment.allowed_attempts,resultAssignment.html_url,resultAssignment.html_url+'/submissions/'+resultAssignment.submission.user_id,resultAssignment.submission]); 
         }
       };
     });
