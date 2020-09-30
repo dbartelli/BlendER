@@ -117,6 +117,27 @@ function getCourseAssignments(mode) {
       else {
         submissionDateConverted = null;
       }
+      // Check / Update Locked
+      if (resultAssignment.locked_for_user === true) {
+        lockedFlag = 'Locked'; //populates spreadsheet with 'Locked' to be more clear / easier on the eyes vs TRUE/FALSE
+      }
+      else {
+        lockedFlag = null;
+      }
+      // Check / Update Late
+      if (resultAssignment.submission.late === true) {
+        lateFlag = 'Late'; //populates spreadsheet with 'Late' to be more clear / easier on the eyes vs TRUE/FALSE
+      }
+      else {
+        lateFlag = null;
+      }
+      // Check / Update Missing
+      if (resultAssignment.submission.missing === true) {
+        missingFlag = 'Missing'; //populates spreadsheet with 'Missing' to be more clear / easier on the eyes vs TRUE/FALSE
+      }
+      else {
+        missingFlag = null;
+      }
       var days = diffDays(resultAssignment.due_at); // number days between today and due_at date
       // Check that will show only assignments within certin # days between today and due date and ignores older or blank due date assignments. 
       if(mode == 'all' || (mode == 'focused' && resultAssignment.due_at != null && days <= 7)) {
@@ -124,7 +145,7 @@ function getCourseAssignments(mode) {
           // Ignore/skip this assignment because part of bad chinese class assignment group
         }
         else {
-          assignments.push([result.name,resultAssignment.name,dueDateConverted,submissionDateConverted,resultAssignment.locked_for_user,resultAssignment.submission.late,resultAssignment.submission.missing,resultAssignment.submission.entered_grade,resultAssignment.points_possible,resultAssignment.submission.submission_type,resultAssignment.allowed_attempts,resultAssignment.html_url,resultAssignment.html_url+'/submissions/'+resultAssignment.submission.user_id,resultAssignment.submission]); 
+          assignments.push([result.name,resultAssignment.name,dueDateConverted,submissionDateConverted,lockedFlag,lateFlag,missingFlag,resultAssignment.submission.entered_grade,resultAssignment.points_possible,resultAssignment.submission.submission_type,resultAssignment.allowed_attempts,resultAssignment.html_url,resultAssignment.html_url+'/submissions/'+resultAssignment.submission.user_id,resultAssignment.submission]); 
         }
       };
     });
