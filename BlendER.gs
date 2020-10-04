@@ -31,18 +31,18 @@ function onOpen() {
   // checkSheets('Assignments');
   // checkSheets('UpcomingEvents');
   // checkSheets('ActivityStream');
-  var menuEntries = [ {name: 'Setup Access Token-REQUIRED', functionName: 'setToken'},
+  var menuEntries = [ {name: 'Initial Setup-REQUIRED', functionName: 'setToken'},
                      {name: 'Update Assignments-Focused', functionName: 'menuCourseAssignmentsFocused'},
                      {name: 'Update Assignments-Show All', functionName: 'menuCourseAssignmentsAll'},
                      {name: 'Update Events', functionName: 'getUpcomingEvents'},
                      {name: 'Update Activity Stream', functionName: 'getActivityStream'},
                      {name: 'About BlendER', functionName: 'aboutBlendER'}];
-  sheet.addMenu('HEY! BlendER Setup and Actions', menuEntries);  
+  sheet.addMenu('###BlendER###', menuEntries);  
 }
 
 // Function for setting Set Token in Menu
 function setToken() {
-  var token = Browser.inputBox('Enter your API access token: (Get it from Blend website>Account>Settings>New Access Token button)');
+  var token = Browser.inputBox('Enter Student Blend Access Token: (Get it from Blend portal>Account>Settings>New Access Token button)');
   if(token && token != 'cancel') {
     ScriptProperties.setProperty('canvas_access_token', token);
   } else {
@@ -62,7 +62,7 @@ function menuCourseAssignmentsAll() {
 
 // Function for Menu to show About Script
 function aboutBlendER() {
-  Browser.msgBox('BlendER created by Dave Bartelli 9/2020 in a feeble attempt to maintain sanity while digging through Blend assignments/grades/event screens.');
+  Browser.msgBox('BlendER is Dave Bartelli’s Emergency Relief package for managing Austin ISD’s Blend portal.\\nOriginally Created 9/2020.\\nMore about Dave: https://www.linkedin.com/in/davebartelli/');
 }
 
 // Function to Convert from ISO time to local time using library from momentjs.com
@@ -96,11 +96,11 @@ function getCourseAssignments(mode) {
   // Get courses
   var response = UrlFetchApp.fetch(domain + '/api/v1/courses?enrollment_state=active&state[]=available&per_page=200',params);
   var data = JSON.parse(response.getContentText());
-  var sheetHeader = ['Course','Assignment','Due Date','Submitted Date','Locked?','Late?','Missing?','Grade','Pts Possible','Type','Allowed Attempts','Assignment URL','Submission URL','SubmissionJSON'];
+  var sheetHeader = ['Course','Assignment','Due Date','Submitted Date','Locked?','Late?','Missing?','Grade','Pts Possible','Type','Allowed Attempts','Assignment URL','Submission URL','Submission Details'];
   var assignments = [sheetHeader]; // Starts it off with just the header for the sheet/table and later adds rows
   data.forEach(function (result) {
     // Loop through each course and pull assignments
-    var responseAssignment = UrlFetchApp.fetch(domain + '/api/v1/courses/'+result.id+'/assignments?include[]=submission&per_page=300',params);
+    var responseAssignment = UrlFetchApp.fetch(domain + '/api/v1/courses/'+result.id+'/assignments?include[]=submission&per_page=800',params);
     var dataAssignment = JSON.parse(responseAssignment.getContentText());
     dataAssignment.forEach(function(resultAssignment) {
       if (resultAssignment.due_at != null) {
