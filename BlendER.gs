@@ -14,23 +14,9 @@ var params = {
   'method': 'GET'
 }; 
 
-
-// Function to check existence of sheet tab and create it if it doesn't exist
-function checkSheets(sheetName) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet();
-  var checkSheet = sheet.getSheetByName(sheetName);
-  if (!checkSheet) {
-    sheet.insertSheet(sheetName);
-  } 
-}
-
 // Function to create custom Menu in Google Sheets
 function onOpen() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
-  // Check for sheet tabs that are needed 
-  // checkSheets('Assignments');
-  // checkSheets('UpcomingEvents');
-  // checkSheets('ActivityStream');
   var menuEntries = [ {name: 'Initial Setup-REQUIRED', functionName: 'setToken'},
                      {name: 'Update Assignments-Focused', functionName: 'menuCourseAssignmentsFocused'},
                      {name: 'Update Assignments-Show All', functionName: 'menuCourseAssignmentsAll'},
@@ -62,7 +48,7 @@ function menuCourseAssignmentsAll() {
 
 // Function for Menu to show About Script
 function aboutBlendER() {
-  Browser.msgBox('BlendER is Dave Bartelli’s Emergency Relief package for managing Austin ISD’s Blend portal.\\nOriginally Created 9/2020.\\nMore about Dave: https://www.linkedin.com/in/davebartelli/');
+  Browser.msgBox('BlendER is Dave Bartelli’s Emergency Relief solution for managing Austin ISD’s Blend portal.\\nInfo and Instructions:  https://www.davebartelli.com/blender\\nMore about Dave: https://www.linkedin.com/in/davebartelli/');
 }
 
 // Function to Convert from ISO time to local time using library from momentjs.com
